@@ -1,8 +1,8 @@
 {
-  "name": "Terminal Portfolio by SN",
+  "name": "Terminal Portfolio by Jaswanth Krishna",
   "short_name": "Terminal",
-  "description": "Sat Naing's terminal portfolio website coded with ReactJS.",
-  "start_url": "/",
+  "description": "Jaswanth Krishna's terminal portfolio website coded with ReactJS.",
+  "start_url": "/portfolio/",
   "icons": [
     {
       "src": "/maskable-icons/maskable_icon_x48.png",
