@@ -33,12 +33,12 @@ const Education: React.FC = () => {
     <EducationContainer>
       <EducationItem>
         <School>Vellore Institute of Technology, Vellore</School>
-        <Degree>Bachelor of Technology in Computer Science and Engineering</Degree>
-        <Date>2021 - 2025</Date>
+        <Degree>Bachelor of Technology in Computer Science and Engineering (AIML)</Degree>
+        <Date>2023 - 2027</Date>
         <Details>
-          • CGPA: 8.89/10
+          • Currently pursuing B.Tech in CSE with specialization in Artificial Intelligence and Machine Learning
           <br />
-          • Relevant Coursework: Data Structures and Algorithms, Object-Oriented Programming, Database Management Systems, Operating Systems, Computer Networks, Software Engineering
+          • Relevant Coursework: Data Structures and Algorithms, Object-Oriented Programming, Database Management Systems, Operating Systems, Computer Networks, Software Engineering, Machine Learning, Deep Learning
           <br />
           • Active member of the Google Developer Student Clubs (GDSC)
           <br />
@@ -47,26 +47,26 @@ const Education: React.FC = () => {
       </EducationItem>
 
       <EducationItem>
-        <School>Narayana Junior College, Hyderabad</School>
-        <Degree>Higher Secondary Education (Class XII)</Degree>
-        <Date>2019 - 2021</Date>
+        <School>Mathrusri Junior College, Hyderabad</School>
+        <Degree>Intermediate Education</Degree>
+        <Date>2021 - 2023</Date>
         <Details>
-          • Percentage: 97.6%
-          <br />
           • Studied Mathematics, Physics, and Chemistry
           <br />
-          • Achieved state rank in JEE Mains
+          • Achieved excellent academic performance
+          <br />
+          • Participated in various academic competitions
         </Details>
       </EducationItem>
 
       <EducationItem>
-        <School>Narayana High School, Hyderabad</School>
-        <Degree>Secondary Education (Class X)</Degree>
-        <Date>2018 - 2019</Date>
+        <School>The Future Kids School</School>
+        <Degree>Secondary Education</Degree>
+        <Date>2021</Date>
         <Details>
-          • CGPA: 10/10
+          • Completed secondary education with distinction
           <br />
-          • Achieved perfect score in Mathematics and Science
+          • Active participation in extracurricular activities
         </Details>
       </EducationItem>
     </EducationContainer>
@@ -74,3 +74,4 @@ const Education: React.FC = () => {
 };
 
 export default Education;
+
