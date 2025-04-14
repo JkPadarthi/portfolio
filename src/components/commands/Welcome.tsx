@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
  ╚════╝ ╚═╝  ╚═╝`}
           </PreNameMobile>
         </PreWrapper>
-        <div>Welcome to Jaswanth Krishna Padarthi's terminal portfolio. (Version 1.2)</div>
+        <div>Welcome to Jaswanth Krishna's Terminal Portfolio</div>
         <Seperator>----</Seperator>
         <div>
           For a list of available commands, type `<Cmd>help</Cmd>`.
