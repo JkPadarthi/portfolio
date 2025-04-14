@@ -1,49 +1,36 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProjectsIntro } from "../styles/Projects.styled";
 import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../styles/Help.styled";
-import {
-  checkRedirect,
-  generateTabs,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../utils/funcs";
 import { termContext } from "../Terminal";
-import Usage from "../Usage";
+import styled from "styled-components";
+
+const SocialLink = styled.a`
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const Socials: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+  const { arg } = useContext(termContext);
 
-  /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command makes redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "socials")) {
-      socials.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
-      });
-    }
-  }, [arg, rerender, currentCommand]);
-
-  /* ===== check arg is valid ===== */
-  const checkArg = () =>
-    isArgInvalid(arg, "go", ["1", "2", "3", "4"]) ? (
-      <Usage cmd="socials" />
-    ) : null;
-
-  return arg.length > 0 || arg.length > 2 ? (
-    checkArg()
-  ) : (
+  return (
     <HelpWrapper data-testid="socials">
       <ProjectsIntro>Here are my social links</ProjectsIntro>
       {socials.map(({ id, title, url, tab }) => (
         <CmdList key={title}>
-          <Cmd>{`${id}. ${title}`}</Cmd>
-          {generateTabs(tab)}
+          <Cmd>
+            <SocialLink href={url} target="_blank" rel="noopener noreferrer">
+              {`${id}. ${title}`}
+            </SocialLink>
+          </Cmd>
+          {Array(tab).fill("\u00A0").join("")}
           <CmdDesc>- {url}</CmdDesc>
         </CmdList>
       ))}
-      <Usage cmd="socials" marginY />
     </HelpWrapper>
   );
 };

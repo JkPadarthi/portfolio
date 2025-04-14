@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   padding: 1.25rem;
   padding-top: 0.75rem;
-
   display: flex;
   flex-direction: column-reverse;
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
+  position: relative;
 `;
 
 export const CmdNotFound = styled.div`
@@ -38,10 +38,23 @@ export const Form = styled.form`
   @media (min-width: 550px) {
     display: flex;
   }
+  position: sticky;
+  bottom: 0;
+  background-color: ${({ theme }) => theme.colors.background};
+  padding-top: 0.5rem;
+  z-index: 10;
 `;
 
 export const Input = styled.input`
   flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
 
   @media (max-width: 550px) {
     min-width: 85%;

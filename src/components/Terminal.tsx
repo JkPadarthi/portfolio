@@ -26,17 +26,32 @@ type Command = {
   tab: number;
 }[];
 
-export const commands: Command = [
-  { cmd: "about", desc: "about Sat Naing", tab: 8 },
+export const allCommands: Command = [
   { cmd: "clear", desc: "clear the terminal", tab: 8 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "education", desc: "my education background", tab: 4 },
-  { cmd: "email", desc: "send an email to me", tab: 8 },
-  { cmd: "gui", desc: "go to my portfolio in GUI", tab: 10 },
+  { cmd: "glitch", desc: "activate glitch mode", tab: 7 },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
   { cmd: "projects", desc: "view projects that I've coded", tab: 5 },
-  { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  { cmd: "reboot", desc: "restart the terminal", tab: 7 },
+  { cmd: "resume", desc: "download my resume", tab: 7 },
+  { cmd: "socials", desc: "check out my social accounts", tab: 6 },
+  { cmd: "themes", desc: "check available themes", tab: 7 },
+  { cmd: "welcome", desc: "display hero section", tab: 6 },
+  { cmd: "whoami", desc: "about current user", tab: 7 },
+];
+
+// Commands that will be shown in help menu
+export const commands: Command = [
+  { cmd: "clear", desc: "clear the terminal", tab: 8 },
+  { cmd: "echo", desc: "print out anything", tab: 9 },
+  { cmd: "education", desc: "my education background", tab: 4 },
+  { cmd: "help", desc: "check available commands", tab: 9 },
+  { cmd: "history", desc: "view command history", tab: 6 },
+  { cmd: "projects", desc: "view projects that I've coded", tab: 5 },
+  { cmd: "reboot", desc: "restart the terminal", tab: 7 },
+  { cmd: "resume", desc: "download my resume", tab: 7 },
   { cmd: "socials", desc: "check out my social accounts", tab: 6 },
   { cmd: "themes", desc: "check available themes", tab: 7 },
   { cmd: "welcome", desc: "display hero section", tab: 6 },
@@ -70,15 +85,17 @@ const Terminal = () => {
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setRerender(false);
       setInputVal(e.target.value);
     },
-    [inputVal]
+    []
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCmdHistory([inputVal, ...cmdHistory]);
+    // Don't add to history if it's empty
+    if (inputVal) {
+      setCmdHistory([inputVal, ...cmdHistory]);
+    }
     setInputVal("");
     setRerender(true);
     setHints([]);
@@ -92,18 +109,42 @@ const Terminal = () => {
 
   // focus on input when terminal is clicked
   const handleDivClick = () => {
-    inputRef.current && inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
+
   useEffect(() => {
     document.addEventListener("click", handleDivClick);
+    
+    // Listen for custom events from project links
+    const handleTerminalCommand = (e: CustomEvent) => {
+      if (e.detail) {
+        setInputVal(e.detail);
+        setRerender(true);
+      }
+    };
+    
+    window.addEventListener('terminal-command', handleTerminalCommand as EventListener);
+    
     return () => {
       document.removeEventListener("click", handleDivClick);
+      window.removeEventListener('terminal-command', handleTerminalCommand as EventListener);
     };
-  }, [containerRef]);
+  }, []);
+
+  // For caret position at the end - only update when using arrow keys
+  useEffect(() => {
+    if (inputRef.current && pointer !== -1) {
+      requestAnimationFrame(() => {
+        const length = inputVal.length;
+        inputRef.current?.setSelectionRange(length, length);
+      });
+    }
+  }, [pointer]);
 
   // Keyboard Press
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setRerender(false);
     const ctrlI = e.ctrlKey && e.key.toLowerCase() === "i";
     const ctrlL = e.ctrlKey && e.key.toLowerCase() === "l";
 
@@ -112,8 +153,14 @@ const Terminal = () => {
       e.preventDefault();
       if (!inputVal) return;
 
+      // Don't autocomplete if we're just starting to type and the last command was a project view
+      const lastCommand = cmdHistory[0] || "";
+      if (lastCommand.startsWith("projects go") && inputVal.length === 1) {
+        return;
+      }
+
       let hintsCmds: string[] = [];
-      commands.forEach(({ cmd }) => {
+      allCommands.forEach(({ cmd }) => {
         if (_.startsWith(cmd, inputVal)) {
           hintsCmds = [...hintsCmds, cmd];
         }
@@ -146,19 +193,18 @@ const Terminal = () => {
 
     // Go previous cmd
     if (e.key === "ArrowUp") {
+      e.preventDefault();
       if (pointer >= cmdHistory.length) return;
-
       if (pointer + 1 === cmdHistory.length) return;
 
       setInputVal(cmdHistory[pointer + 1]);
       setPointer(prevState => prevState + 1);
-      inputRef?.current?.blur();
     }
 
     // Go next cmd
     if (e.key === "ArrowDown") {
+      e.preventDefault();
       if (pointer < 0) return;
-
       if (pointer === 0) {
         setInputVal("");
         setPointer(-1);
@@ -167,17 +213,8 @@ const Terminal = () => {
 
       setInputVal(cmdHistory[pointer - 1]);
       setPointer(prevState => prevState - 1);
-      inputRef?.current?.blur();
     }
   };
-
-  // For caret position at the end
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      inputRef?.current?.focus();
-    }, 1);
-    return () => clearTimeout(timer);
-  }, [inputRef, inputVal, pointer]);
 
   return (
     <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
@@ -210,7 +247,7 @@ const Terminal = () => {
 
       {cmdHistory.map((cmdH, index) => {
         const commandArray = _.split(_.trim(cmdH), " ");
-        const validCommand = _.find(commands, { cmd: commandArray[0] });
+        const validCommand = _.find(allCommands, { cmd: commandArray[0] });
         const contextValue = {
           arg: _.drop(commandArray),
           history: cmdHistory,

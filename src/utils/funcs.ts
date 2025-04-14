@@ -25,7 +25,18 @@ export const isArgInvalid = (
   arg: string[],
   action: string,
   options: string[]
-) => arg[0] !== action || !_.includes(options, arg[1]) || arg.length > 2;
+) => {
+  // For commands with no arguments (like just "projects")
+  if (arg.length === 0) return false;
+
+  // For three-part commands like "projects go 1"
+  if (arg.length === 2 && arg[0] === "go") {
+    return !_.includes(options, arg[1]);
+  }
+
+  // For invalid commands
+  return true;
+};
 
 /**
  * Transform current cmd & arg into array
@@ -50,10 +61,9 @@ export const checkRedirect = (
 ): boolean =>
   rerender && // is submitted
   currentCommand[0] === command && // current command starts with ('socials'|'projects')
+  currentCommand.length === 3 && // command must be exactly 3 parts (e.g. "projects go 1")
   currentCommand[1] === "go" && // first arg is 'go'
-  currentCommand.length > 1 && // current command has arg
-  currentCommand.length < 4 && // if num of arg is valid (not `projects go 1 sth`)
-  _.includes([1, 2, 3, 4], parseInt(currentCommand[2])); // arg last part is one of id
+  _.includes([1, 2, 3, 4, 5, 6, 7], parseInt(currentCommand[2])); // arg last part is one of id
 
 /**
  * Check current render makes redirect for theme
@@ -143,10 +153,13 @@ export const argTab = (
   // 8) if input is 'projects go '
   else if (_.startsWith(inputVal, "projects go ")) {
     [
-      "1.Sat Naing's Blog",
-      "2.Haru Fashion",
-      "3.Haru API",
-      "4.AstroPaper Blog Theme",
+      "1.Mind Mirror",
+      "2.AI Dungeon Master",
+      "3.ChronoSolus",
+      "4.Pi-Hole",
+      "5.KuroTech Dashboard",
+      "6.Vosk Pipeline",
+      "7.SDR Experiments"
     ].forEach(t => {
       hintsCmds = [...hintsCmds, t];
     });

@@ -1,83 +1,181 @@
-import { useContext, useEffect } from "react";
-import {
-  checkRedirect,
-  getCurrentCmdArry,
-  isArgInvalid,
-} from "../../utils/funcs";
-import {
-  ProjectContainer,
-  ProjectDesc,
-  ProjectsIntro,
-  ProjectTitle,
-} from "../styles/Projects.styled";
+import { useContext, useState } from "react";
+import { ProjectsIntro } from "../styles/Projects.styled";
 import { termContext } from "../Terminal";
-import Usage from "../Usage";
+import { ProjectContainer, ProjectTitle, ProjectDesc } from "../styles/Projects.styled";
+import MindMirror from "../projects/MindMirror";
+import AIDungeonMaster from "../projects/AIDungeonMaster";
+import ChronoSolus from "../projects/ChronoSolus";
+import PiHole from "../projects/PiHole";
+import KuroTechDashboard from "../projects/KuroTechDashboard";
+import VoskPipeline from "../projects/VoskPipeline";
+import SdrExperiments from "../projects/SdrExperiments";
+import styled from "styled-components";
 
-const Projects: React.FC = () => {
-  const { arg, history, rerender } = useContext(termContext);
+const ProjectLink = styled.a`
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
-  /* ===== get current command ===== */
-  const currentCommand = getCurrentCmdArry(history);
-
-  /* ===== check current command is redirect ===== */
-  useEffect(() => {
-    if (checkRedirect(rerender, currentCommand, "projects")) {
-      projects.forEach(({ id, url }) => {
-        id === parseInt(arg[1]) && window.open(url, "_blank");
-      });
+const BackLink = styled.div`
+  margin-top: 2rem;
+  text-align: left;
+  
+  a {
+    color: #00ff9c;
+    text-decoration: none;
+    cursor: pointer;
+    
+    &:hover {
+      text-decoration: underline;
     }
-  }, [arg, rerender, currentCommand]);
+  }
+`;
 
-  /* ===== check arg is valid ===== */
-  const checkArg = () =>
-    isArgInvalid(arg, "go", ["1", "2", "3", "4"]) ? (
-      <Usage cmd="projects" />
-    ) : null;
-
-  return arg.length > 0 || arg.length > 2 ? (
-    checkArg()
-  ) : (
-    <div data-testid="projects">
-      <ProjectsIntro>
-        “Talk is cheap. Show me the code”? I got you. <br />
-        Here are some of my projects you shouldn't misss
-      </ProjectsIntro>
-      {projects.map(({ id, title, desc }) => (
-        <ProjectContainer key={id}>
-          <ProjectTitle>{`${id}. ${title}`}</ProjectTitle>
-          <ProjectDesc>{desc}</ProjectDesc>
-        </ProjectContainer>
-      ))}
-      <Usage cmd="projects" marginY />
-    </div>
-  );
-};
+const UsageMessage = styled.div`
+  margin: 1rem 0;
+  color: #ff6b6b;
+  font-family: monospace;
+`;
 
 const projects = [
   {
     id: 1,
-    title: "Sat Naing's Blog",
-    desc: "My personal blog where I can write down my thoughts and experiences.",
-    url: "https://satnaing.dev/blog/",
+    title: "The Mind Mirror",
+    desc: "A Raspberry Pi-powered digital reflection dashboard for tracking habits, moods, and mental well-being.",
+    component: MindMirror
   },
   {
     id: 2,
-    title: "Haru Fashion",
-    desc: "An ecommerce web application where users can browse various products and make purchases.",
-    url: "https://haru-fashion.vercel.app/",
+    title: "AI Dungeon Master",
+    desc: "A fully offline, D&D-style AI-powered game system using GPT-Neo/GPT-J. Supports procedural worldgen, dynamic NPCs, branching story arcs, and LAN-based multiplayer with a text+GUI tabletop.",
+    component: AIDungeonMaster
   },
   {
     id: 3,
-    title: "Haru API",
-    desc: "A RESTful API developed for the Haru fashion ecommerce project.",
-    url: "https://satnaing.github.io/haru-api/",
+    title: "ChronoSolus Pomodoro",
+    desc: "A darkly themed Pomodoro timer set in the ChronoSolus universe, syncing with your time, mood, and burnout. Part focus tool, part immersive productivity companion.",
+    component: ChronoSolus
   },
   {
     id: 4,
-    title: "AstroPaper Blog Theme",
-    desc: "A minimal, accessible and SEO-friendly Astro blog theme.",
-    url: "https://astro-paper.pages.dev/",
+    title: "Pi-Hole Ad Blocker",
+    desc: "Network-wide ad blocking built on Raspberry Pi 3B+. Clean, efficient, and a must-have for reclaiming browsing sanity.",
+    component: PiHole
   },
+  {
+    id: 5,
+    title: "Flask x KuroTech Dashboard",
+    desc: "A sci-fi inspired dashboard with system stats (for both Pi and Vivobook), particle backgrounds, and live AJAX updates. Designed with a Wuthering Waves x KuroTech aesthetic.",
+    component: KuroTechDashboard
+  },
+  {
+    id: 6,
+    title: "Offline Vosk Voice Recognition Pipeline",
+    desc: "Speech-to-text system converting Telugu to English using Vosk, then routing queries to a local LLM (Gemma 2). Fully offline voice interface experiment.",
+    component: VoskPipeline
+  },
+  {
+    id: 7,
+    title: "SDR + FM Radio Experiments",
+    desc: "Tuned into signals with Software-Defined Radio. From static chaos to decoding frequencies like a spy in the matrix.",
+    component: SdrExperiments
+  }
 ];
 
-export default Projects;
+const Projects: React.FC = () => {
+  const { arg } = useContext(termContext);
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  
+  // Show usage message if command is invalid
+  if (arg.length > 0 && (arg[0] !== "go" || arg.length !== 2 || isNaN(parseInt(arg[1])))) {
+    return (
+      <UsageMessage>
+        Usage: projects go &lt;project-no&gt;
+        <br />
+        eg: projects go 4
+      </UsageMessage>
+    );
+  }
+  
+  // Check if we're navigating to a specific project via command
+  if (arg.length === 2 && arg[0] === "go") {
+    const projectId = parseInt(arg[1]);
+    if (!isNaN(projectId) && projectId >= 1 && projectId <= projects.length) {
+      const project = projects.find(p => p.id === projectId);
+      if (project?.component) {
+        const ProjectComponent = project.component;
+        return (
+          <>
+            <ProjectComponent />
+            <BackLink>
+              <a href="#" onClick={(e) => {
+                e.preventDefault();
+                setSelectedProject(null);
+              }}>
+                ← Back to projects
+              </a>
+            </BackLink>
+          </>
+        );
+      }
+    }
+  }
+
+  // If a project is selected via click, show that project
+  if (selectedProject !== null) {
+    const project = projects.find(p => p.id === selectedProject);
+    if (project?.component) {
+      const ProjectComponent = project.component;
+      return (
+        <>
+          <ProjectComponent />
+          <BackLink>
+            <a href="#" onClick={(e) => {
+              e.preventDefault();
+              setSelectedProject(null);
+            }}>
+              ← Back to projects
+            </a>
+          </BackLink>
+        </>
+      );
+    }
+  }
+
+  // Show project list if no specific project is selected
+  return (
+    <div data-testid="projects">
+      <ProjectsIntro>
+        Talk is cheap. Show me the code? I got you.
+        <br />
+        Here are some of my projects you shouldn't miss:
+      </ProjectsIntro>
+      {projects.map(({ id, title, desc }) => (
+        <ProjectContainer key={id}>
+          <ProjectTitle>
+            <ProjectLink
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedProject(id);
+              }}
+            >
+              {id}. {title}
+            </ProjectLink>
+          </ProjectTitle>
+          <ProjectDesc>{desc}</ProjectDesc>
+        </ProjectContainer>
+      ))}
+      <UsageMessage>
+        Usage: Click on a project name to see more details
+      </UsageMessage>
+    </div>
+  );
+};
+
+export default Projects; 
