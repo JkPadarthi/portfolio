@@ -301,7 +301,7 @@ Power Source: Curiosity, Raspberry Pi, and way too many ideas`}),v.jsx(Ju,{child
      ██║█████╔╝ 
 ██   ██║██╔═██╗ 
 ╚█████╔╝██║  ██╗
- ╚════╝ ╚═╝  ╚═╝`})}),v.jsx("div",{children:"Welcome to Jaswanth Krishna Padarthi's terminal portfolio. (Version 1.2)"}),v.jsx(tL,{children:"----"}),v.jsxs("div",{children:["For a list of available commands, type `",v.jsx(nL,{children:"help"}),"`."]})]})}),iL=()=>{const{history:e,index:t}=T.useContext(Sr),n=Te.reverse(Te.slice(e,t));return v.jsx(xh,{"data-testid":"history",children:n.map(o=>v.jsx("div",{children:o},Te.uniqueId(`${o}_`)))})},Nw=M.div`
+ ╚════╝ ╚═╝  ╚═╝`})}),v.jsx("div",{children:"Welcome to Jaswanth Krishna's Terminal Portfolio"}),v.jsx(tL,{children:"----"}),v.jsxs("div",{children:["For a list of available commands, type `",v.jsx(nL,{children:"help"}),"`."]})]})}),iL=()=>{const{history:e,index:t}=T.useContext(Sr),n=Te.reverse(Te.slice(e,t));return v.jsx(xh,{"data-testid":"history",children:n.map(o=>v.jsx("div",{children:o},Te.uniqueId(`${o}_`)))})},Nw=M.div`
   margin-bottom: 1rem;
 `,oL=M.div`
   margin-bottom: 1.5rem;
