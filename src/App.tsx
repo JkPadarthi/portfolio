@@ -17,7 +17,7 @@ const App = () => {
     <ThemeProvider theme={currentTheme}>
       <GlobalStyle />
       <themeContext.Provider value={setCurrentTheme}>
-        <Router>
+        <Router basename="/portfolio">
           <Routes>
             <Route
               path="/"

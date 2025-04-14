@@ -4,12 +4,33 @@ export type Themes = {
   [key: string]: DefaultTheme;
 };
 
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    id: string;
+    name: string;
+    colors: {
+      body: string;
+      background: string;
+      scrollHandle: string;
+      scrollHandleHover: string;
+      primary: string;
+      secondary: string;
+      text: {
+        100: string;
+        200: string;
+        300: string;
+      };
+    };
+  }
+}
+
 const theme: Themes = {
   dark: {
     id: "T_001",
     name: "dark",
     colors: {
       body: "#1D2A35",
+      background: "#1D2A35",
       scrollHandle: "#19252E",
       scrollHandleHover: "#162028",
       primary: "#05CE91",
@@ -26,6 +47,7 @@ const theme: Themes = {
     name: "light",
     colors: {
       body: "#EFF3F3",
+      background: "#EFF3F3",
       scrollHandle: "#C1C1C1",
       scrollHandleHover: "#AAAAAA",
       primary: "#027474",
@@ -42,6 +64,7 @@ const theme: Themes = {
     name: "blue-matrix",
     colors: {
       body: "#101116",
+      background: "#101116",
       scrollHandle: "#424242",
       scrollHandleHover: "#616161",
       primary: "#00ff9c",
@@ -58,6 +81,7 @@ const theme: Themes = {
     name: "espresso",
     colors: {
       body: "#323232",
+      background: "#323232",
       scrollHandle: "#5b5b5b",
       scrollHandleHover: "#393939",
       primary: "#E1E48B",
@@ -74,6 +98,7 @@ const theme: Themes = {
     name: "green-goblin",
     colors: {
       body: "#000000",
+      background: "#000000",
       scrollHandle: "#2E2E2E",
       scrollHandleHover: "#414141",
       primary: "#E5E500",
@@ -90,6 +115,7 @@ const theme: Themes = {
     name: "ubuntu",
     colors: {
       body: "#2D0922",
+      background: "#2D0922",
       scrollHandle: "#F47845",
       scrollHandleHover: "#E65F31",
       primary: "#80D932",
