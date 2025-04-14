@@ -634,7 +634,7 @@ Power Source: Curiosity, Raspberry Pi, and way too many ideas`}),v.jsx(Ju,{child
   &:hover {
     text-decoration: underline;
   }
-`,X$=()=>(T.useContext(Sr),v.jsxs($w,{"data-testid":"socials",children:[v.jsx(Nw,{children:"Here are my social links"}),Z$.map(({id:e,title:t,url:n,tab:o})=>v.jsxs(Iw,{children:[v.jsx(jw,{children:v.jsx(Q$,{href:n,target:"_blank",rel:"noopener noreferrer",children:`${e}. ${t}`})}),Array(o).fill(" ").join(""),v.jsxs(Ow,{children:["- ",n]})]},t))]})),Z$=[{id:1,title:"GitHub",url:"https://github.com/satnaing",tab:3},{id:2,title:"Dev.to",url:"https://dev.to/satnaing",tab:3},{id:3,title:"Facebook",url:"https://www.facebook.com/satnaing.dev",tab:1},{id:4,title:"Instagram",url:"https://instagram.com/satnaing.dev",tab:0}],J$=D.div`
+`,X$=()=>(T.useContext(Sr),v.jsxs($w,{"data-testid":"socials",children:[v.jsx(Nw,{children:"Here are my social links"}),Z$.map(({id:e,title:t,url:n,tab:o})=>v.jsxs(Iw,{children:[v.jsx(jw,{children:v.jsx(Q$,{href:n,target:"_blank",rel:"noopener noreferrer",children:`${e}. ${t}`})}),Array(o).fill(" ").join(""),v.jsxs(Ow,{children:["- ",n]})]},t))]})),Z$=[{id:1,title:"GitHub",url:"https://github.com/JkPadarthi",tab:3},{id:2,title:"Dev.to",url:"https://dev.to/jkpadarthi",tab:3},{id:3,title:"Email",url:"mailto:padarthi.jaswanth2023@vitstudent.ac.in",tab:3}],J$=D.div`
   display: flex;
   flex-wrap: wrap;
 `,q$=D.span`
