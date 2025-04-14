@@ -607,7 +607,7 @@ Power Source: Curiosity, Raspberry Pi, and way too many ideas`}),v.jsx(Ju,{child
 `,VL=D.div`
   color: #50fa7b;
   margin-top: 0.5rem;
-`,KL=()=>{const[e,t]=T.useState(null),[n,o]=T.useState(!1),[l,s]=T.useState(!1);return T.useEffect(()=>{(async()=>{if(!(n||l)){o(!0);try{const f=document.createElement("a");f.href="/portfolio/resume.pdf",f.download="Jaswanth_Krishna_Resume.pdf",f.target="_blank",document.body.appendChild(f),f.click(),document.body.removeChild(f),s(!0)}catch(f){t("Failed to download resume. Please try again or contact support."),console.error("Resume download error:",f)}finally{o(!1)}}})()},[n,l]),v.jsxs(HL,{"data-testid":"resume",children:[!l&&!e&&v.jsx("p",{children:"Downloading your resume..."}),l&&v.jsx(VL,{children:"Resume downloaded successfully!"}),e&&v.jsx(GL,{children:e})]})},YL=D.a`
+`,KL=()=>{const[e,t]=T.useState(null),[n,o]=T.useState("idle");return T.useEffect(()=>{if(n!=="idle")return;const s=setTimeout(()=>{o("downloading");try{const a=document.createElement("a");a.href="/portfolio/resume.pdf",a.download="Jaswanth_Krishna_Resume.pdf";const f=()=>{o("downloaded"),a.removeEventListener("click",f)};a.addEventListener("click",f),document.body.appendChild(a),a.click(),document.body.removeChild(a)}catch(a){t("Failed to download resume. Please try again or contact support."),console.error("Resume download error:",a),o("idle")}},100);return()=>clearTimeout(s)},[n]),v.jsxs(HL,{"data-testid":"resume",children:[n==="downloading"&&v.jsx("p",{children:"Downloading your resume..."}),n==="downloaded"&&v.jsx(VL,{children:"Resume downloaded successfully!"}),e&&v.jsx(GL,{children:e})]})},YL=D.a`
   color: inherit;
   text-decoration: none;
   cursor: pointer;
